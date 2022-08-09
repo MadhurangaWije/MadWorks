@@ -20,15 +20,13 @@ parameters:
     displayName: 'Azure Resource Manager Service Connection'
     type: string
 
-jobs:
-  - job: DeleteBastion
-    displayName: 'Bastion Delete Pipeline'
-    steps:
-      - task: AzureCLI@2
-        displayName: Azure CLI
-        inputs:
-          azureSubscription: "${{ parameters.AZURE_RM_SERVICE_CONNECTION }}"
-          scriptType: bash
-          scriptLocation: inlineScript
-          inlineScript: |
-            az network bastion delete --name "${{ parameters.BASTION_SERVICE_NAME }}" --resource-group "${{ parameters.RESOURCE_GROUP }}"
+
+steps:
+  - task: AzureCLI@2
+    displayName: Azure CLI
+    inputs:
+      azureSubscription: "${{ parameters.AZURE_RM_SERVICE_CONNECTION }}"
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az network bastion delete --name "${{ parameters.BASTION_SERVICE_NAME }}" --resource-group "${{ parameters.RESOURCE_GROUP }}"
