@@ -1,0 +1,43 @@
+#-------------------------------------------------------------------------------------
+#
+# Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+#
+# This software is the property of WSO2 Inc. and its suppliers, if any.
+# Dissemination of any information or reproduction of any material contained
+# herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+# You may not alter or remove any copyright or other notice from copies of this content.
+#
+# --------------------------------------------------------------------------------------
+
+parameters:
+  - name: BASTION_SERVICE_NAME
+    displayName: 'Bastion Service Name'
+    type: string
+  - name: PUBLIC_IP_ADDRESS
+    displayName: 'Azure Public IP Address'
+    type: string
+  - name: RESOURCE_GROUP
+    displayName: 'Resource Group'
+    type: string
+  - name: VNET_NAME
+    displayName: 'Virtual Network Name'
+    type: string
+  - name: LOCATION
+    displayName: 'Location'
+    type: string
+  - name: AZURE_RM_SERVICE_CONNECTION
+    displayName: 'Azure Resource Manager Service Connection'
+    type: string
+
+jobs:
+  - job: CreateBastion
+    displayName: 'Bastion Create Pipeline'
+    steps:
+      - task: AzureCLI@2
+        displayName: Azure CLI
+        inputs:
+          azureSubscription: "${{ parameters.AZURE_RM_SERVICE_CONNECTION }}"
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az network bastion create --name "${{ parameters.BASTION_SERVICE_NAME }}" --public-ip-address "${{ parameters.PUBLIC_IP_ADDRESS }}" --resource-group "${{ parameters.RESOURCE_GROUP }}" --vnet-name "${{ parameters.VNET_NAME }}" --location "${{ parameters.LOCATION }}"
